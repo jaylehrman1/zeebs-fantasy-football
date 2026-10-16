@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zeebs Hall of Fame</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --frame-wood:    #3B2414;
+    --frame-wood-lt: #6B4527;
+    --frame-wood-dk: #1C1108;
+    --interior:      #0F0B07;
+    --ivory:         #EFE7D6;
+    --ivory-dim:     #B9AD95;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: #070504;
+    color: var(--ivory);
+    font-family: "Barlow Condensed", sans-serif;
+  }
+
+  body { -webkit-font-smoothing: antialiased; }
+
+  h1, .engraved { font-family: "Fraunces", serif; font-weight: 600; margin: 0; }
+
+  svg.icon { display: block; overflow: visible; }
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    padding: 72px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -130px; left: 50%;
+    width: 640px; height: 420px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(255,223,140,0.15), transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero .eyebrow {
+    position: relative;
+    color: #D4AF37;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 {
+    position: relative;
+    font-size: clamp(2.4rem, 6.5vw, 3.8rem);
+    font-style: italic;
+    color: var(--ivory);
+    line-height: 1.05;
+  }
+
+  .hero p {
+    position: relative;
+    margin: 16px auto 0;
+    max-width: 42ch;
+    font-size: 1.25rem;
+    color: var(--ivory-dim);
+    line-height: 1.35;
+  }
+
+  .hero .hint {
+    position: relative;
+    margin-top: 30px;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    color: var(--ivory-dim);
+    opacity: 0.55;
+    animation: bob 2.2s ease-in-out infinite;
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero .hint { animation: none; }
+  }
+
+  /* ---------- THE CASE ---------- */
+
+  .case-wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 20px 90px;
+  }
+
+  .case {
+    position: relative;
+    background:
+      repeating-linear-gradient(97deg, rgba(0,0,0,0.16) 0 2px, transparent 2px 15px),
+      linear-gradient(160deg, var(--frame-wood-lt), var(--frame-wood) 35%, var(--frame-wood-dk));
+    border-radius: 6px;
+    box-shadow:
+      inset 0 0 0 2px rgba(0,0,0,0.35),
+      0 40px 80px rgba(0,0,0,0.6);
+    padding: 14px;
+    perspective: 1800px;
+  }
+
+  /* ---------- CASE DOORS ---------- */
+
+  .case-doors {
+    position: absolute;
+    inset: 14px;
+    display: flex;
+    z-index: 6;
+    transform-style: preserve-3d;
+    pointer-events: none;
+  }
+
+  .door {
+    flex: 1 1 50%;
+    position: relative;
+    background:
+      repeating-linear-gradient(100deg, rgba(0,0,0,0.14) 0 2px, transparent 2px 16px),
+      linear-gradient(170deg, var(--frame-wood-lt), var(--frame-wood) 45%, var(--frame-wood-dk));
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,0.3), inset 0 0 34px rgba(0,0,0,0.45);
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  .door::before {
+    content: "";
+    position: absolute;
+    inset: 16px;
+    border: 2px solid rgba(0,0,0,0.38);
+    border-radius: 2px;
+    box-shadow: inset 0 0 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .door::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 7px;
+    height: 44px;
+    border-radius: 4px;
+    transform: translateY(-50%);
+    background: linear-gradient(180deg, #F3D27A, #8A661E);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  .door-left {
+    transform-origin: left center;
+    border-right: 1px solid rgba(0,0,0,0.5);
+  }
+
+  .door-left::after { right: 12px; }
+
+  .door-right {
+    transform-origin: right center;
+    border-left: 1px solid rgba(0,0,0,0.5);
+  }
+
+  .door-right::after { left: 12px; }
+
+  .case-interior {
+    position: relative;
+    background: var(--interior);
+    border-radius: 2px;
+    box-shadow: inset 0 0 70px rgba(0,0,0,0.85), inset 0 2px 8px rgba(0,0,0,0.9);
+    padding: 6px 6px 0;
+    overflow: hidden;
+  }
+
+  /* glass reflection streak across the whole case */
+  .case-interior::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.05) 46%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.03) 54%, transparent 62%);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* each shelf */
+  .shelf {
+    position: relative;
+    padding: 26px 24px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.6);
+  }
+
+  .shelf:last-child { border-bottom: none; }
+
+  .shelf-label {
+    font-size: 0.92rem;
+    letter-spacing: 0.08em;
+    color: var(--ivory-dim);
+    opacity: 0.65;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .shelf-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  /* the glass shelf plank under each row */
+  .shelf-plank {
+    height: 9px;
+    margin: 0 4px 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02));
+    border-bottom: 2px solid rgba(255,255,255,0.22);
+    border-radius: 1px;
+  }
+
+  /* ---------- TROPHY ITEM ---------- */
+
+  .trophy-item {
+    position: relative;
+    text-align: center;
+    width: 128px;
+    padding-top: 10px;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+  }
+
+  .trophy-item:hover,
+  .trophy-item:focus-visible {
+    transform: translateY(-5px) scale(1.045);
+  }
+
+  .trophy-item:focus-visible { outline: none; }
+
+  .trophy-icon {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 8px rgba(0,0,0,0.6));
+    transition: filter 0.25s ease;
+  }
+
+  .trophy-item:hover .trophy-icon,
+  .trophy-item:focus-visible .trophy-icon {
+    filter: drop-shadow(0 14px 10px rgba(0,0,0,0.7)) drop-shadow(0 0 16px rgba(242,194,48,0.4));
+  }
+
+  /* positioned to land on the wood block in the photo, as a
+     percentage of the trophy image's own box so it scales with it */
+  .nameplate {
+    position: absolute;
+    left: 50%;
+    top: 77.5%;
+    transform: translate(-50%, -50%);
+    width: 56%;
+    background: linear-gradient(180deg, #E3C372, #A47F2E 55%, #8A6A24);
+    border-radius: 1px;
+    padding: 5px 6px 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 1px rgba(0,0,0,0.35);
+    z-index: 2;
+  }
+
+  .nameplate .year {
+    font-family: "Fraunces", serif;
+    font-weight: 700;
+    font-size: clamp(0.7rem, 2.6vw, 0.92rem);
+    color: #2A1D08;
+    line-height: 1.1;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.35), 0 -1px 0 rgba(0,0,0,0.25);
+  }
+
+  .nameplate .name {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: clamp(0.55rem, 2vw, 0.72rem);
+    letter-spacing: 0.01em;
+    color: #4A3815;
+    line-height: 1.15;
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.3), 0 -1px 0 rgba(0,0,0,0.2);
+  }
+
+  /* ---------- EMPTY PEDESTALS (GYITL) ---------- */
+
+  .pedestal-item { width: 120px; }
+
+  .pedestal-item .trophy-icon {
+    opacity: 0.8;
+    filter: drop-shadow(0 8px 6px rgba(0,0,0,0.5));
+  }
+
+  .pedestal-item .nameplate {
+    background: linear-gradient(180deg, #4A443A, #2E2A23 55%, #231F1A);
+    width: 96px;
+  }
+
+  .pedestal-item .nameplate .year { color: #C9C2AD; }
+  .pedestal-item .nameplate .name { color: #9A9280; }
+
+  /* ---------- SEASON DETAIL MODAL ---------- */
+
+  .season-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .season-modal.open {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .season-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5,3,2,0.8);
+    backdrop-filter: blur(3px);
+  }
+
+  .season-modal-card {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background:
+      repeating-linear-gradient(97deg, rgba(0,0,0,0.16) 0 2px, transparent 2px 15px),
+      linear-gradient(160deg, var(--frame-wood-lt), var(--frame-wood) 35%, var(--frame-wood-dk));
+    border-radius: 10px;
+    box-shadow: 0 40px 90px rgba(0,0,0,0.7), inset 0 0 0 2px rgba(0,0,0,0.35);
+    padding: 28px 24px 24px;
+    transform: translateY(14px) scale(0.97);
+    transition: transform 0.25s ease;
+  }
+
+  .season-modal.open .season-modal-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .season-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.35);
+    color: var(--ivory);
+    border: 1px solid rgba(255,255,255,0.15);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .season-modal-close:hover { background: rgba(0,0,0,0.5); }
+
+  .season-modal-head {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .season-modal-year {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: clamp(1.7rem, 5vw, 2.1rem);
+    color: var(--win);
+  }
+
+  .season-modal-champ {
+    font-size: 0.98rem;
+    color: var(--ivory-dim);
+    margin-top: 2px;
+  }
+
+  .season-modal-scroll {
+    overflow-x: auto;
+    border: 1px solid rgba(242,194,48,0.22);
+    border-radius: 6px;
+  }
+
+  .season-modal-table {
+    width: 100%;
+    min-width: 460px;
+    border-collapse: collapse;
+    background: var(--interior);
+  }
+
+  .season-modal-table th,
+  .season-modal-table td {
+    padding: 9px 11px;
+    font-size: 0.82rem;
+    text-align: left;
+    white-space: nowrap;
+    color: var(--ivory);
+  }
+
+  .season-modal-table thead th {
+    color: var(--win);
+    font-weight: 600;
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid rgba(242,194,48,0.3);
+  }
+
+  .season-modal-table tbody tr:nth-child(odd) { background: rgba(242,194,48,0.035); }
+  .season-modal-table tbody tr:not(:last-child) td { border-bottom: 1px solid rgba(242,194,48,0.08); }
+
+  .season-modal-table tbody tr.champ-row { background: rgba(242,194,48,0.16); }
+  .season-modal-table tbody tr.champ-row td.owner::after { content: " \1F3C6"; }
+
+  .season-modal-table th.num,
+  .season-modal-table td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .season-modal-empty {
+    text-align: center;
+    color: var(--ivory-dim);
+    font-style: italic;
+    padding: 28px 10px;
+  }
+
+  @media (max-width: 480px) {
+    .season-modal-table { font-size: 0.78rem; }
+    .season-modal-table th, .season-modal-table td { padding: 8px 8px; }
+  }
+
+  /* ---------- CASE PLAQUE (bottom) ---------- */
+
+  /* ---------- ALL-TIME RECORDS ---------- */
+
+  :root {
+    /* league colors: black and yellow */
+    --win:   #F2C230;
+    --loss:  #1C1915;
+    --loss-border: rgba(242,194,48,0.65);
+  }
+
+  .records {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 10px 24px 90px;
+  }
+
+  .records-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    margin-bottom: 28px;
+  }
+
+  .records-head h2 {
+    font-size: clamp(1.5rem, 4vw, 1.9rem);
+    font-style: italic;
+    color: var(--ivory);
+  }
+
+  .data-note {
+    font-size: 0.78rem;
+    color: var(--ivory-dim);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  .tap-hint {
+    text-align: center;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    color: var(--ivory-dim);
+    opacity: 0.6;
+    font-style: italic;
+    margin: 14px 24px 0;
+  }
+
+  .tap-hint .tap-icon {
+    display: inline-block;
+    margin-right: 2px;
+    font-style: normal;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-size: 0.95rem;
+    color: var(--ivory-dim);
+  }
+
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend-item .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block;
+    box-sizing: border-box;
+  }
+
+  .swatch.wins   { background: var(--win); }
+  .swatch.losses { background: var(--loss); border: 1.5px solid var(--loss-border); }
+
+  .records-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .record-row {
+    display: grid;
+    grid-template-columns: 148px 1fr 56px;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .record-name {
+    display: flex;
+    min-width: 0;
+  }
+
+  .rn-name {
+    font-size: 1.05rem;
+    color: var(--ivory);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .record-bar {
+    display: flex;
+    height: 26px;
+    gap: 2px;
+  }
+
+  .bar-seg {
+    flex-basis: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .bar-seg .bar-num {
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .bar-seg.wins {
+    background: var(--win);
+    border-radius: 4px 0 0 4px;
+  }
+
+  .bar-seg.wins .bar-num { color: #1C1915; }
+
+  .bar-seg.losses {
+    background: var(--loss);
+    border: 1.5px solid var(--loss-border);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .bar-seg.losses .bar-num { color: var(--win); }
+
+  .record-pct {
+    text-align: right;
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ivory);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 480px) {
+    .record-row { grid-template-columns: 108px 1fr 48px; gap: 10px; }
+    .rn-name { font-size: 0.95rem; }
+    .bar-seg .bar-num { font-size: 0.72rem; }
+  }
+
+  /* ---------- SEASON STANDINGS TABLE ---------- */
+
+  :root {
+    --diff-pos: #6FBF73;
+    --diff-neg: #E0726B;
+  }
+
+  .standings {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 10px 20px 100px;
+  }
+
+  .standings h2 {
+    font-size: clamp(1.5rem, 4vw, 1.9rem);
+    font-style: italic;
+    color: var(--ivory);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .standings-scroll {
+    overflow-x: auto;
+    border: 1px solid rgba(242,194,48,0.22);
+    border-radius: 6px;
+  }
+
+  .standings-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  .standings-table th,
+  .standings-table td {
+    padding: 11px 14px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .standings-table thead th {
+    color: var(--win);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-size: 0.82rem;
+    border-bottom: 1px solid rgba(242,194,48,0.3);
+  }
+
+  .standings-table tbody tr:nth-child(odd) {
+    background: rgba(242,194,48,0.035);
+  }
+
+  .standings-table tbody tr {
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .standings-table tbody tr:hover,
+  .standings-table tbody tr:focus-visible {
+    background: rgba(242,194,48,0.12);
+    outline: none;
+  }
+
+  .standings-table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid rgba(242,194,48,0.08);
+  }
+
+  .standings-table td { color: var(--ivory); }
+
+  .standings-table .rk {
+    color: var(--win);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .standings-table th.num,
+  .standings-table td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .standings-table td.diff.pos { color: var(--diff-pos); }
+  .standings-table td.diff.neg { color: var(--diff-neg); }
+
+  @media (max-width: 560px) {
+    .standings-table { font-size: 0.85rem; }
+    .standings-table th, .standings-table td { padding: 9px 10px; }
+  }
+
+  footer {
+    text-align: center;
+    padding: 0 24px 50px;
+    color: var(--ivory-dim);
+    font-size: 0.95rem;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 560px) {
+    .shelf { padding: 20px 10px 10px; }
+    .shelf-items { gap: 2px; }
+    .trophy-item { width: 104px; }
+  }
+</style>
+</head>
+<body>
+
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="goldBase" x1="0" y1="0" x2="0.15" y2="1">
+        <stop offset="0%"  stop-color="#F6D98A" />
+        <stop offset="40%" stop-color="#D1A23E" />
+        <stop offset="75%" stop-color="#9A701E" />
+        <stop offset="100%" stop-color="#6E4E12" />
+      </linearGradient>
+      <linearGradient id="grayBase" x1="0" y1="0" x2="0.15" y2="1">
+        <stop offset="0%"  stop-color="#9A9486" />
+        <stop offset="45%" stop-color="#635D4F" />
+        <stop offset="100%" stop-color="#2A2720" />
+      </linearGradient>
+      <linearGradient id="marbleGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#312F32" />
+        <stop offset="45%" stop-color="#17161A" />
+        <stop offset="100%" stop-color="#0B0A0D" />
+      </linearGradient>
+      <linearGradient id="woodBase" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#5C3A22" />
+        <stop offset="55%" stop-color="#3B2414" />
+        <stop offset="100%" stop-color="#1C1108" />
+      </linearGradient>
+
+      <!-- bump-mapped specular lighting: turns a flat gradient fill into
+           a surface that actually catches and reflects a light source -->
+      <filter id="shine" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="blur" />
+        <feSpecularLighting in="blur" surfaceScale="5.5" specularConstant="0.95" specularExponent="15" lighting-color="#FFFBE8" result="spec">
+          <fePointLight x="-20" y="-60" z="150" />
+        </feSpecularLighting>
+        <feComposite in="spec" in2="SourceAlpha" operator="in" result="specClip" />
+        <feComposite in="SourceGraphic" in2="specClip" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" />
+      </filter>
+
+      <symbol id="trophy-shape" viewBox="0 0 100 200">
+        <ellipse cx="50" cy="196" rx="35" ry="5" fill="#000" opacity="0.4" />
+
+        <!-- plinth -->
+        <rect x="9" y="173" width="82" height="18" rx="1.5" fill="url(#woodBase)" />
+        <rect x="9" y="173" width="82" height="3" fill="#6B4527" opacity="0.55" />
+
+        <!-- cube base (nameplate mounts here) -->
+        <rect x="21" y="130" width="58" height="44" rx="1.5" fill="url(#woodBase)" />
+        <rect x="21" y="130" width="58" height="3" fill="#6B4527" opacity="0.55" />
+
+        <g filter="url(#shine)">
+          <!-- flared stand -->
+          <path d="M38,120 C38,127 33,130 27,130 L73,130 C67,130 62,127 62,120 C62,109 57,100 50,100 C43,100 38,109 38,120 Z" fill="url(#goldBase)" />
+          <!-- football -->
+          <ellipse cx="50" cy="58" rx="25" ry="44" fill="url(#goldBase)" />
+        </g>
+
+        <!-- seams -->
+        <path d="M28,30 C23,45 23,72 28,88" fill="none" stroke="#6E4E12" stroke-width="1" opacity="0.4" />
+        <path d="M72,30 C77,45 77,72 72,88" fill="none" stroke="#6E4E12" stroke-width="1" opacity="0.4" />
+
+        <!-- laces -->
+        <g stroke="#6E4E12" stroke-width="2.2" stroke-linecap="round" opacity="0.85">
+          <line x1="50" y1="21" x2="50" y2="95" />
+          <line x1="42" y1="27" x2="58" y2="27" />
+          <line x1="41" y1="37" x2="59" y2="37" />
+          <line x1="40" y1="47" x2="60" y2="47" />
+          <line x1="40" y1="58" x2="60" y2="58" />
+          <line x1="40" y1="69" x2="60" y2="69" />
+          <line x1="41" y1="79" x2="59" y2="79" />
+          <line x1="42" y1="89" x2="58" y2="89" />
+        </g>
+        <line x1="49" y1="21" x2="49" y2="95" stroke="#FCE7A8" stroke-width="0.8" stroke-linecap="round" opacity="0.5" />
+      </symbol>
+
+      <symbol id="pedestal-shape" viewBox="0 0 90 150">
+        <ellipse cx="45" cy="146" rx="27" ry="4.5" fill="#000" opacity="0.4" />
+        <rect x="15" y="122" width="60" height="21" rx="2" fill="url(#marbleGrad)" />
+        <rect x="15" y="122" width="60" height="3.5" fill="url(#grayBase)" />
+        <g filter="url(#shine)">
+          <ellipse cx="45" cy="120" rx="14" ry="4.5" fill="url(#grayBase)" />
+          <rect x="41" y="96" width="8" height="25" fill="url(#grayBase)" />
+          <ellipse cx="45" cy="96" rx="11" ry="4" fill="url(#grayBase)" />
+        </g>
+        <ellipse cx="45" cy="58" rx="23" ry="32" fill="none" stroke="#555045" stroke-width="2" stroke-dasharray="3 6" opacity="0.5" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <section class="hero">
+    <div class="eyebrow">THE ZEEBS LEAGUE</div>
+    <h1>Hall of Fame</h1>
+    <div class="hint">↓ scroll to open the case</div>
+  </section>
+
+  <div class="case-wrap">
+    <div class="case" id="case">
+      <div class="case-interior" id="case-interior"></div>
+      <div class="case-doors" id="case-doors">
+        <div class="door door-left"></div>
+        <div class="door door-right"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tap-hint"><span class="tap-icon">👆</span>Tap a trophy for that season's full standings</div>
+
+  <div class="season-modal" id="season-modal" aria-hidden="true">
+    <div class="season-modal-backdrop" id="season-modal-backdrop"></div>
+    <div class="season-modal-card" role="dialog" aria-modal="true" aria-labelledby="season-modal-year">
+      <button class="season-modal-close" id="season-modal-close" aria-label="Close">&times;</button>
+      <div class="season-modal-head">
+        <div class="season-modal-year" id="season-modal-year"></div>
+        <div class="season-modal-champ" id="season-modal-champ"></div>
+      </div>
+      <div id="season-modal-body"></div>
+    </div>
+  </div>
+
+  <section class="records">
+    <div class="records-head">
+      <div>
+        <h2>All-Time Win Percentage</h2>
+        <div class="data-note">Season records on file since 2017</div>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><i class="swatch wins"></i>Wins</span>
+        <span class="legend-item"><i class="swatch losses"></i>Losses</span>
+      </div>
+    </div>
+
+    <div class="records-list" id="records-list"></div>
+  </section>
+
+  <section class="standings">
+    <h2>All-Time Standings</h2>
+    <div class="data-note" style="text-align:center; margin: -12px auto 20px;">Season records on file since 2017 · tap a row for that owner's career</div>
+    <div class="standings-scroll">
+      <table class="standings-table">
+        <thead>
+          <tr>
+            <th>Rk</th>
+            <th>Owner</th>
+            <th class="num">Rec</th>
+            <th class="num">PF</th>
+            <th class="num">PA</th>
+            <th class="num">PF/G</th>
+            <th class="num">PA/G</th>
+            <th class="num">Diff</th>
+          </tr>
+        </thead>
+        <tbody id="standings-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>The Zeebs League · est. 2015</footer>
+
+  <script src="zeebs-history.js"></script>
+  <script src="zeebs-records.js"></script>
+  <script src="zeebs-season-stats.js"></script>
+  <script>
+    (function () {
+      const data = ZEEBS_DATA;
+
+      const years = [...data.champions].sort((a, b) => b.year - a.year);
+
+      const interior = document.getElementById("case-interior");
+
+      function trophyItem(c) {
+        const el = document.createElement("div");
+        el.className = "trophy-item";
+        el.tabIndex = 0;
+        el.setAttribute("role", "button");
+        el.setAttribute("aria-label", `See ${c.year} season standings`);
+        el.innerHTML = `
+          <img class="trophy-icon" src="zeebs-trophy.png" alt="Trophy" />
+          <div class="nameplate">
+            <div class="year">${c.year}</div>
+            <div class="name">${c.champion}</div>
+          </div>
+        `;
+        el.addEventListener("click", () => openSeasonModal(c.year, c.champion));
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openSeasonModal(c.year, c.champion);
+          }
+        });
+        return el;
+      }
+
+      // ---- season detail modal ----
+      const modal = document.getElementById("season-modal");
+      const modalYear = document.getElementById("season-modal-year");
+      const modalChamp = document.getElementById("season-modal-champ");
+      const modalBody = document.getElementById("season-modal-body");
+      let lastFocused = null;
+
+      function openSeasonModal(year, champion) {
+        modalYear.textContent = year;
+        modalChamp.textContent = `Champion: ${champion}`;
+
+        const stats = (typeof ZEEBS_SEASON_STATS !== "undefined") ? ZEEBS_SEASON_STATS[year] : null;
+
+        if (!stats) {
+          modalBody.innerHTML = `<div class="season-modal-empty">Detailed standings aren't on file for ${year} yet.</div>`;
+        } else {
+          const rows = [...stats].sort((a, b) => a.rank - b.rank).map(t => `
+            <tr class="${t.owner === champion ? "champ-row" : ""}">
+              <td class="num">${t.rank}</td>
+              <td class="owner">${t.owner}</td>
+              <td class="num">${t.wins}-${t.losses}</td>
+              <td class="num">${t.pf.toFixed(1)}</td>
+              <td class="num">${t.pa.toFixed(1)}</td>
+              <td class="num">${t.diff > 0 ? "+" : ""}${t.diff.toFixed(1)}</td>
+            </tr>
+          `).join("");
+
+          modalBody.innerHTML = `
+            <div class="season-modal-scroll">
+              <table class="season-modal-table">
+                <thead>
+                  <tr>
+                    <th class="num">Rk</th>
+                    <th>Owner</th>
+                    <th class="num">Rec</th>
+                    <th class="num">PF</th>
+                    <th class="num">PA</th>
+                    <th class="num">Diff</th>
+                  </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+              </table>
+            </div>
+          `;
+        }
+
+        revealModal();
+      }
+
+      // owner drill-down, opened from a standings-table row
+      function openOwnerModal(owner) {
+        const champYears = ZEEBS_DATA.champions
+          .filter(c => c.champion === owner)
+          .map(c => c.year);
+
+        modalYear.textContent = owner;
+        modalChamp.textContent = champYears.length
+          ? `${champYears.length}x Champion (${champYears.sort((a, b) => a - b).join(", ")})`
+          : "Still chasing the first title";
+
+        const years = (typeof ZEEBS_SEASON_STATS !== "undefined")
+          ? Object.keys(ZEEBS_SEASON_STATS).map(Number).sort((a, b) => b - a)
+          : [];
+        const seasons = [];
+        years.forEach(y => {
+          const entry = ZEEBS_SEASON_STATS[y].find(s => s.owner === owner);
+          if (entry) seasons.push({ year: y, ...entry });
+        });
+
+        if (!seasons.length) {
+          modalBody.innerHTML = `<div class="season-modal-empty">No season-by-season data on file for ${owner} yet.</div>`;
+        } else {
+          const rows = seasons.map(s => `
+            <tr class="${champYears.includes(s.year) ? "champ-row" : ""}">
+              <td class="num">${s.year}</td>
+              <td class="num">${s.wins}-${s.losses}</td>
+              <td class="num">${s.pf.toFixed(1)}</td>
+              <td class="num">${s.pa.toFixed(1)}</td>
+              <td class="num">${s.diff > 0 ? "+" : ""}${s.diff.toFixed(1)}</td>
+            </tr>
+          `).join("");
+
+          modalBody.innerHTML = `
+            <div class="season-modal-scroll">
+              <table class="season-modal-table">
+                <thead>
+                  <tr>
+                    <th class="num">Year</th>
+                    <th class="num">Rec</th>
+                    <th class="num">PF</th>
+                    <th class="num">PA</th>
+                    <th class="num">Diff</th>
+                  </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+              </table>
+            </div>
+          `;
+        }
+
+        revealModal();
+      }
+
+      function revealModal() {
+        lastFocused = document.activeElement;
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        document.getElementById("season-modal-close").focus();
+      }
+
+      function closeSeasonModal() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        if (lastFocused) lastFocused.focus();
+      }
+
+      document.getElementById("season-modal-close").addEventListener("click", closeSeasonModal);
+      document.getElementById("season-modal-backdrop").addEventListener("click", closeSeasonModal);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("open")) closeSeasonModal();
+      });
+
+      const shelf = document.createElement("div");
+      shelf.className = "shelf";
+
+      const items = document.createElement("div");
+      items.className = "shelf-items";
+      years.forEach(c => items.appendChild(trophyItem(c)));
+      shelf.appendChild(items);
+
+      const plank = document.createElement("div");
+      plank.className = "shelf-plank";
+      shelf.appendChild(plank);
+
+      interior.appendChild(shelf);
+
+      // ---- scroll-locked door opening ----
+      // While the page is still at the very top, scroll input doesn't move
+      // the page at all — it only opens (or closes) the doors. Only once
+      // the doors are fully open does scrolling down start moving the page.
+      // Scrolling back up to the very top re-engages the lock so the doors
+      // close again before you can scroll further up.
+      const doorLeft = document.querySelector(".door-left");
+      const doorRight = document.querySelector(".door-right");
+      const MAX_ANGLE = 100; // past 90deg the hidden backface makes the door vanish
+      const WHEEL_SENSITIVITY = 450;  // wheel/trackpad deltaY units to fully open
+      const TOUCH_SENSITIVITY = 240;  // drag px to fully open
+
+      let progress = 0; // 0 = closed, 1 = fully open
+
+      function setDoors(p) {
+        const angle = p * MAX_ANGLE;
+        doorLeft.style.transform = `rotateY(${-angle}deg)`;
+        doorRight.style.transform = `rotateY(${angle}deg)`;
+      }
+      setDoors(progress);
+
+      function atTop() {
+        return window.scrollY <= 0.5;
+      }
+
+      function handleWheel(e) {
+        if (!atTop()) return; // page has moved past the intro — scroll normally
+        const opening = e.deltaY > 0 && progress < 1;
+        const closing = e.deltaY < 0 && progress > 0;
+        if (!opening && !closing) return; // nothing left to animate, let the page move
+        e.preventDefault();
+        progress = Math.max(0, Math.min(1, progress + e.deltaY / WHEEL_SENSITIVITY));
+        setDoors(progress);
+      }
+
+      let touchY = null;
+
+      function handleTouchStart(e) {
+        touchY = e.touches[0].clientY;
+      }
+
+      function handleTouchMove(e) {
+        if (touchY === null) return;
+        const currentY = e.touches[0].clientY;
+        const delta = touchY - currentY; // positive = finger moving up = scrolling down
+
+        if (!atTop()) { touchY = currentY; return; }
+        const opening = delta > 0 && progress < 1;
+        const closing = delta < 0 && progress > 0;
+        if (!opening && !closing) { touchY = currentY; return; }
+
+        e.preventDefault();
+        progress = Math.max(0, Math.min(1, progress + delta / TOUCH_SENSITIVITY));
+        setDoors(progress);
+        touchY = currentY;
+      }
+
+      window.addEventListener("wheel", handleWheel, { passive: false });
+      window.addEventListener("touchstart", handleTouchStart, { passive: true });
+      window.addEventListener("touchmove", handleTouchMove, { passive: false });
+      window.addEventListener("touchend", () => { touchY = null; });
+
+      // ---- all-time records ----
+      // totals are built by adding up every season entry per manager,
+      // so ZEEBS_SEASON_RECORDS can just grow one season at a time.
+      const totals = {};
+      ZEEBS_SEASON_RECORDS.forEach(s => {
+        if (!totals[s.manager]) totals[s.manager] = { name: s.manager, wins: 0, losses: 0 };
+        totals[s.manager].wins += s.wins;
+        totals[s.manager].losses += s.losses;
+      });
+
+      const records = Object.values(totals)
+        .map(r => ({ ...r, pct: r.wins / (r.wins + r.losses) * 100 }))
+        .sort((a, b) => b.pct - a.pct);
+
+      const listEl = document.getElementById("records-list");
+
+      records.forEach(r => {
+        const pctLabel = r.pct.toFixed(1) + "%";
+
+        const row = document.createElement("div");
+        row.className = "record-row";
+        row.innerHTML = `
+          <div class="record-name">
+            <span class="rn-name">${r.name}</span>
+          </div>
+          <div class="record-bar">
+            <div class="bar-seg wins" style="flex-grow:${r.wins}"><span class="bar-num">${r.wins}</span></div>
+            <div class="bar-seg losses" style="flex-grow:${r.losses}"><span class="bar-num">${r.losses}</span></div>
+          </div>
+          <div class="record-pct">${pctLabel}</div>
+        `;
+        listEl.appendChild(row);
+      });
+
+      // ---- all-time standings table ----
+      // Adds up every season on record (ZEEBS_SEASON_STATS), grouped
+      // by owner, so a new year just slots in and the totals update.
+      const statsBody = document.getElementById("standings-body");
+
+      const ownerTotals = {};
+      Object.values(ZEEBS_SEASON_STATS).flat().forEach(s => {
+        if (!ownerTotals[s.owner]) {
+          ownerTotals[s.owner] = { owner: s.owner, wins: 0, losses: 0, pf: 0, pa: 0 };
+        }
+        const t = ownerTotals[s.owner];
+        t.wins += s.wins;
+        t.losses += s.losses;
+        t.pf += s.pf;
+        t.pa += s.pa;
+      });
+
+      const allTime = Object.values(ownerTotals).map(t => {
+        const games = t.wins + t.losses;
+        const pfg = t.pf / games;
+        const pag = t.pa / games;
+        return { ...t, games, pfg, pag, diff: pfg - pag, winPct: t.wins / games };
+      }).sort((a, b) => b.wins - a.wins || b.winPct - a.winPct);
+
+      allTime.forEach((s, i) => {
+        const diffSign = s.diff > 0 ? "+" : "";
+        const diffClass = s.diff > 0 ? "pos" : s.diff < 0 ? "neg" : "";
+        const tr = document.createElement("tr");
+        tr.tabIndex = 0;
+        tr.setAttribute("role", "button");
+        tr.setAttribute("aria-label", `See ${s.owner}'s season-by-season record`);
+        tr.innerHTML = `
+          <td class="rk">${i + 1}</td>
+          <td class="owner-cell">${s.owner}</td>
+          <td class="num">${s.wins}-${s.losses}</td>
+          <td class="num">${s.pf.toFixed(2)}</td>
+          <td class="num">${s.pa.toFixed(2)}</td>
+          <td class="num">${s.pfg.toFixed(1)}</td>
+          <td class="num">${s.pag.toFixed(1)}</td>
+          <td class="num diff ${diffClass}">${diffSign}${s.diff.toFixed(1)}</td>
+        `;
+        tr.addEventListener("click", () => openOwnerModal(s.owner));
+        tr.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openOwnerModal(s.owner);
+          }
+        });
+        statsBody.appendChild(tr);
+      });
+    })();
+  </script>
+
+</body>
+</html>
