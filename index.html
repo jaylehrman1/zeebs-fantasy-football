@@ -100,7 +100,7 @@
   .case-wrap {
     max-width: 920px;
     margin: 0 auto;
-    padding: 0 20px 90px;
+    padding: 0 20px 16px;
   }
 
   .case {
@@ -180,16 +180,6 @@
     box-shadow: inset 0 0 70px rgba(0,0,0,0.85), inset 0 2px 8px rgba(0,0,0,0.9);
     padding: 6px 6px 0;
     overflow: hidden;
-  }
-
-  /* glass reflection streak across the whole case */
-  .case-interior::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.05) 46%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.03) 54%, transparent 62%);
-    pointer-events: none;
-    z-index: 5;
   }
 
   /* each shelf */
@@ -497,7 +487,7 @@
     color: var(--ivory-dim);
     opacity: 0.6;
     font-style: italic;
-    margin: 14px 24px 0;
+    margin: 4px 24px 74px;
   }
 
   .tap-hint .tap-icon {
@@ -604,9 +594,20 @@
   }
 
   @media (max-width: 480px) {
-    .record-row { grid-template-columns: 108px 1fr 48px; gap: 10px; }
+    .records { padding-left: 16px; padding-right: 16px; }
+    .record-row {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "name pct"
+        "bar  bar";
+      row-gap: 8px;
+      column-gap: 10px;
+    }
+    .record-name { grid-area: name; }
+    .record-pct { grid-area: pct; }
+    .record-bar { grid-area: bar; height: 28px; }
     .rn-name { font-size: 0.95rem; }
-    .bar-seg .bar-num { font-size: 0.72rem; }
+    .bar-seg .bar-num { font-size: 0.78rem; }
   }
 
   /* ---------- SEASON STANDINGS TABLE ---------- */
@@ -631,15 +632,54 @@
   }
 
   .standings-scroll {
+    position: relative;
     overflow-x: auto;
     border: 1px solid rgba(242,194,48,0.22);
     border-radius: 6px;
   }
 
+  .scroll-fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 28px;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .scroll-fade-left {
+    left: 0;
+    background: linear-gradient(to right, var(--interior), rgba(15,11,7,0));
+  }
+
+  .scroll-fade-right {
+    right: 0;
+    background: linear-gradient(to left, var(--interior), rgba(15,11,7,0));
+  }
+
+  .standings-scroll.can-scroll-left .scroll-fade-left { opacity: 1; }
+  .standings-scroll.can-scroll-right .scroll-fade-right { opacity: 1; }
+
+  .swipe-hint {
+    display: none;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    color: var(--ivory-dim);
+    opacity: 0.6;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .swipe-hint.visible { display: block; }
+
   .standings-table {
     width: 100%;
     min-width: 720px;
     border-collapse: collapse;
+    table-layout: fixed;
     font-size: 0.92rem;
   }
 
@@ -648,6 +688,8 @@
     padding: 11px 14px;
     text-align: left;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .standings-table thead th {
@@ -697,6 +739,178 @@
     .standings-table { font-size: 0.85rem; }
     .standings-table th, .standings-table td { padding: 9px 10px; }
   }
+
+  /* ---------- BUMP CHART (standings over time) ---------- */
+
+  .bump {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 10px 20px 100px;
+  }
+
+  .bump h2 {
+    font-size: clamp(1.5rem, 4vw, 1.9rem);
+    font-style: italic;
+    color: var(--ivory);
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  #bump-chart-wrap {
+    margin-top: 18px;
+  }
+
+  .bump-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .bump-caption {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--ivory-dim);
+    margin-top: 12px;
+    min-height: 1.2em;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .bump-caption.visible { opacity: 1; }
+  .bump-caption strong { color: var(--win); }
+
+  /* mobile: stacked per-owner sparkline cards instead of the full chart */
+  .bump-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .spark-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: rgba(242,194,48,0.035);
+    border: 1px solid rgba(242,194,48,0.14);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .spark-card:hover,
+  .spark-card:focus-visible {
+    background: rgba(242,194,48,0.1);
+    outline: none;
+  }
+
+  .spark-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .spark-name {
+    font-size: 0.92rem;
+    color: var(--ivory);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .spark-rank {
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--ivory-dim);
+    margin-top: 2px;
+  }
+
+  .spark-svg { flex-shrink: 0; }
+  .spark-line {
+    fill: none;
+    stroke: var(--win);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .spark-dot { fill: var(--win); }
+
+  @media (max-width: 680px) {
+    .bump-desktop { display: none; }
+    .bump-mobile { display: flex; }
+  }
+
+  .bump-grid line {
+    stroke: rgba(255,255,255,0.06);
+    stroke-width: 1;
+  }
+
+  .bump-axis-label {
+    font-family: "Barlow Condensed", sans-serif;
+    fill: var(--ivory-dim);
+    opacity: 0.55;
+    font-size: 11px;
+  }
+
+  .bump-line {
+    fill: none;
+    stroke: rgba(185,173,149,0.38);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.2s ease, stroke-width 0.2s ease, opacity 0.2s ease;
+  }
+
+  .bump-hit {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 16;
+    cursor: pointer;
+  }
+
+  .bump-dot {
+    fill: rgba(185,173,149,0.5);
+    transition: fill 0.2s ease, opacity 0.2s ease;
+  }
+
+  .bump-label {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 12px;
+    fill: var(--ivory-dim);
+    opacity: 0.7;
+    transition: fill 0.2s ease, opacity 0.2s ease, font-weight 0.2s ease;
+  }
+
+  .bump-group { cursor: pointer; }
+
+  .bump-chart.has-active .bump-group:not(.active) .bump-line,
+  .bump-chart.has-active .bump-group:not(.active) .bump-dot {
+    opacity: 0.12;
+  }
+
+  .bump-chart.has-active .bump-group:not(.active) .bump-label {
+    opacity: 0.18;
+  }
+
+  .bump-chart.has-active .bump-group.active .bump-line {
+    stroke: var(--win);
+    stroke-width: 3;
+  }
+
+  .bump-chart.has-active .bump-group.active .bump-dot {
+    fill: var(--win);
+  }
+
+  .bump-chart.has-active .bump-group.active .bump-label {
+    fill: var(--win);
+    opacity: 1;
+    font-weight: 600;
+  }
+
+  .bump-group:hover .bump-line { stroke: var(--win); stroke-width: 3; }
+  .bump-group:hover .bump-dot { fill: var(--win); }
+  .bump-group:hover .bump-label { fill: var(--win); opacity: 1; font-weight: 600; }
 
   footer {
     text-align: center;
@@ -848,8 +1062,21 @@
   <section class="standings">
     <h2>All-Time Standings</h2>
     <div class="data-note" style="text-align:center; margin: -12px auto 20px;">Season records on file since 2017 · tap a row for that owner's career</div>
-    <div class="standings-scroll">
+    <div class="swipe-hint" id="swipe-hint">↔ swipe to see full stats</div>
+    <div class="standings-scroll" id="standings-scroll">
+      <div class="scroll-fade scroll-fade-left" aria-hidden="true"></div>
+      <div class="scroll-fade scroll-fade-right" aria-hidden="true"></div>
       <table class="standings-table">
+        <colgroup>
+          <col style="width:7%">
+          <col style="width:19%">
+          <col style="width:11%">
+          <col style="width:13%">
+          <col style="width:13%">
+          <col style="width:12%">
+          <col style="width:12%">
+          <col style="width:13%">
+        </colgroup>
         <thead>
           <tr>
             <th>Rk</th>
@@ -865,6 +1092,16 @@
         <tbody id="standings-body"></tbody>
       </table>
     </div>
+  </section>
+
+  <section class="bump">
+    <h2>Standings Over Time</h2>
+    <div class="data-note" style="text-align:center;">Season records on file since 2017 · tap a line to follow that owner</div>
+    <div class="bump-desktop">
+      <div id="bump-chart-wrap"></div>
+      <div class="bump-caption" id="bump-caption"></div>
+    </div>
+    <div class="bump-mobile" id="bump-mobile"></div>
   </section>
 
   <footer>The Zeebs League · est. 2015</footer>
@@ -1187,6 +1424,209 @@
         });
         statsBody.appendChild(tr);
       });
+
+      // ---- scroll affordance for the standings table ----
+      const scrollEl = document.getElementById("standings-scroll");
+      const swipeHint = document.getElementById("swipe-hint");
+
+      function updateScrollAffordance() {
+        const overflowing = scrollEl.scrollWidth > scrollEl.clientWidth + 1;
+        swipeHint.classList.toggle("visible", overflowing);
+        scrollEl.classList.toggle("can-scroll-left", scrollEl.scrollLeft > 1);
+        scrollEl.classList.toggle(
+          "can-scroll-right",
+          overflowing && scrollEl.scrollLeft < scrollEl.scrollWidth - scrollEl.clientWidth - 1
+        );
+      }
+
+      scrollEl.addEventListener("scroll", updateScrollAffordance);
+      window.addEventListener("resize", updateScrollAffordance);
+      updateScrollAffordance();
+
+      // ---- bump chart: final standing by owner, year over year ----
+      // Desktop/tablet (>=680px): one fluid SVG that scales via viewBox to
+      // fill its container width — stretches wide, shrinks narrow, no
+      // horizontal scrolling. Tapping a line shows that owner's average
+      // finish in the caption underneath.
+      // Phone (<680px): a stacked list of small per-owner sparkline cards
+      // instead, since 12 lines crammed into a phone-width chart stop
+      // being readable — each card shows the owner's own rank trend and
+      // average finish, and taps open their full career modal.
+      (function buildBumpChart() {
+        const years = Object.keys(ZEEBS_SEASON_STATS).map(Number).sort((a, b) => a - b);
+        if (!years.length) return;
+
+        const owners = [...new Set(Object.values(ZEEBS_SEASON_STATS).flat().map(s => s.owner))];
+        const maxRank = Math.max(...Object.values(ZEEBS_SEASON_STATS).flat().map(s => s.rank));
+
+        const W = 820;
+        const marginLeft = 30, marginRight = 140, marginTop = 24, marginBottom = 34;
+        const H = marginTop + marginBottom + maxRank * 30;
+        const plotW = W - marginLeft - marginRight;
+        const plotH = H - marginTop - marginBottom;
+        const rowH = plotH / maxRank;
+
+        const xForIndex = i => marginLeft + (years.length === 1 ? plotW / 2 : (plotW * i) / (years.length - 1));
+        const yForRank = rank => marginTop + (rank - 1) * rowH + rowH / 2;
+
+        function ordinal(n) {
+          const s = ["th", "st", "nd", "rd"], v = n % 100;
+          return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        }
+
+        const rankByOwnerYear = {};
+        owners.forEach(o => { rankByOwnerYear[o] = {}; });
+        years.forEach(y => {
+          ZEEBS_SEASON_STATS[y].forEach(s => { rankByOwnerYear[s.owner][y] = s.rank; });
+        });
+
+        function pointsFor(owner, xFn, yFn) {
+          return years.map((yr, i) => rankByOwnerYear[owner][yr] != null
+            ? { x: xFn(i), y: yFn(rankByOwnerYear[owner][yr]), year: yr, rank: rankByOwnerYear[owner][yr] }
+            : null);
+        }
+        function toSegments(points) {
+          const segs = [];
+          let cur = [];
+          points.forEach(p => {
+            if (p) { cur.push(p); } else if (cur.length) { segs.push(cur); cur = []; }
+          });
+          if (cur.length) segs.push(cur);
+          return segs;
+        }
+        function pathFrom(segments) {
+          return segments
+            .map(seg => seg.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" "))
+            .join(" ");
+        }
+
+        let svg = `<svg class="bump-chart" id="bump-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Final standing by owner, ${years[0]} through ${years[years.length - 1]}">`;
+
+        svg += `<g class="bump-grid">`;
+        for (let r = 1; r <= maxRank; r++) {
+          const y = yForRank(r);
+          svg += `<line x1="${marginLeft}" y1="${y}" x2="${marginLeft + plotW}" y2="${y}" />`;
+        }
+        svg += `</g><g>`;
+        for (let r = 1; r <= maxRank; r++) {
+          svg += `<text class="bump-axis-label" x="${marginLeft - 8}" y="${yForRank(r) + 4}" text-anchor="end">${r}</text>`;
+        }
+        svg += `</g><g>`;
+        years.forEach((yr, i) => {
+          svg += `<text class="bump-axis-label" x="${xForIndex(i)}" y="${H - marginBottom + 20}" text-anchor="middle">${yr}</text>`;
+        });
+        svg += `</g>`;
+
+        // mini sparkline geometry, reused for each mobile card
+        const miniW = 120, miniH = 34, miniMX = 4, miniMY = 5;
+        const miniPlotW = miniW - miniMX * 2;
+        const miniPlotH = miniH - miniMY * 2;
+        const xForIndexMini = i => miniMX + (years.length === 1 ? miniPlotW / 2 : (miniPlotW * i) / (years.length - 1));
+        const yForRankMini = rank => maxRank === 1 ? miniH / 2 : miniMY + ((rank - 1) / (maxRank - 1)) * miniPlotH;
+
+        const ownerStats = {};
+        const sparkCards = [];
+
+        owners.forEach(owner => {
+          const points = pointsFor(owner, xForIndex, yForRank);
+          const segments = toSegments(points);
+          if (!segments.length) return;
+
+          const ranks = points.filter(Boolean).map(p => p.rank);
+          const avgRank = ranks.reduce((a, b) => a + b, 0) / ranks.length;
+          ownerStats[owner] = { avgRank, seasons: ranks.length };
+
+          const pathD = pathFrom(segments);
+          const lastSeg = segments[segments.length - 1];
+          const lastPoint = lastSeg[lastSeg.length - 1];
+          const slug = owner.replace(/[^a-z0-9]/gi, "-").toLowerCase();
+
+          svg += `<g class="bump-group" data-owner="${slug}" tabindex="0" role="button" aria-label="${owner}'s standing by year">`;
+          svg += `<path class="bump-hit" d="${pathD}" vector-effect="non-scaling-stroke" />`;
+          svg += `<path class="bump-line" d="${pathD}" vector-effect="non-scaling-stroke" />`;
+          segments.forEach(seg => {
+            seg.forEach(p => {
+              svg += `<circle class="bump-dot" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4"><title>${owner} — ${p.year}: ${ordinal(p.rank)}</title></circle>`;
+            });
+          });
+          svg += `<text class="bump-label" x="${lastPoint.x + 10}" y="${lastPoint.y + 4}">${owner}</text>`;
+          svg += `</g>`;
+
+          // mobile: a small self-contained sparkline card for this owner
+          const miniSegments = toSegments(pointsFor(owner, xForIndexMini, yForRankMini));
+          const miniPathD = pathFrom(miniSegments);
+          const miniDots = miniSegments
+            .map(seg => seg.map(p => `<circle class="spark-dot" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2.5" />`).join(""))
+            .join("");
+
+          sparkCards.push({
+            owner,
+            avgRank,
+            html: `
+              <div class="spark-card" data-owner="${slug}" tabindex="0" role="button" aria-label="See ${owner}'s career">
+                <div class="spark-info">
+                  <div class="spark-name">${owner}</div>
+                  <div class="spark-rank">Avg finish: ${avgRank.toFixed(1)} of ${maxRank}</div>
+                </div>
+                <svg class="spark-svg" width="${miniW}" height="${miniH}" viewBox="0 0 ${miniW} ${miniH}" aria-hidden="true">
+                  <path class="spark-line" d="${miniPathD}" />
+                  ${miniDots}
+                </svg>
+              </div>
+            `
+          });
+        });
+
+        svg += `</svg>`;
+        document.getElementById("bump-chart-wrap").innerHTML = svg;
+
+        sparkCards.sort((a, b) => a.avgRank - b.avgRank);
+        const mobileEl = document.getElementById("bump-mobile");
+        mobileEl.innerHTML = sparkCards.map(c => c.html).join("");
+        mobileEl.querySelectorAll(".spark-card").forEach(card => {
+          const owner = owners.find(o => o.replace(/[^a-z0-9]/gi, "-").toLowerCase() === card.dataset.owner);
+          if (!owner) return;
+          card.addEventListener("click", () => openOwnerModal(owner));
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openOwnerModal(owner);
+            }
+          });
+        });
+
+        const chartSvg = document.getElementById("bump-svg");
+        const caption = document.getElementById("bump-caption");
+        let activeOwner = null;
+
+        function setActive(slug, owner) {
+          activeOwner = slug;
+          chartSvg.classList.toggle("has-active", !!slug);
+          chartSvg.querySelectorAll(".bump-group").forEach(g => {
+            g.classList.toggle("active", g.dataset.owner === slug);
+          });
+          if (slug && owner && ownerStats[owner]) {
+            const st = ownerStats[owner];
+            caption.innerHTML = `<strong>${owner}</strong> — average finish: ${st.avgRank.toFixed(1)} of ${maxRank}, across ${st.seasons} season${st.seasons === 1 ? "" : "s"}`;
+            caption.classList.add("visible");
+          } else {
+            caption.classList.remove("visible");
+          }
+        }
+
+        chartSvg.querySelectorAll(".bump-group").forEach(g => {
+          const owner = owners.find(o => o.replace(/[^a-z0-9]/gi, "-").toLowerCase() === g.dataset.owner);
+          g.addEventListener("click", () => {
+            setActive(activeOwner === g.dataset.owner ? null : g.dataset.owner, owner);
+          });
+          g.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setActive(activeOwner === g.dataset.owner ? null : g.dataset.owner, owner);
+            }
+          });
+        });
+      })();
     })();
   </script>
 
